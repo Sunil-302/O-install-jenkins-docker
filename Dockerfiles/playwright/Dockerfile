@@ -5,10 +5,12 @@ FROM mcr.microsoft.com/playwright:v1.45.1-jammy
 USER root
 RUN apt-get update && apt-get install -y sudo
 
-# Allow the jenkins user to use sudo without password
-RUN echo "jenkins ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# Create jenkins user and group
+RUN groupadd -g 1000 jenkins && \
+    useradd -u 1000 -g jenkins -m -s /bin/bash jenkins && \
+    echo "jenkins ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
-# Switch back to the jenkins user
+# Switch to the jenkins user
 USER jenkins
 
 # Install Playwright browsers
