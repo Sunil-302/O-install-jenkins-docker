@@ -19,7 +19,8 @@ Clone this repository or download it's contents.
 Open a terminal window in the same directory where the `Dockerfile` from this repository is located. Build the Jenkins Docker image:
 
 ```
-docker build -t my-jenkins .
+1) docker build -t my-jenkins .
+2) docker build -t custom-playwright:v1.45.1-jammy .
 ```
 
 ## Step 3

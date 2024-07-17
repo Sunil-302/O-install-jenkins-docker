@@ -35,12 +35,6 @@ services:
     networks:
       - jenkins
 
-  custom-playwright:
-    image: custom-playwright:v1.45.1-jammy
-    container_name: custom-playwright
-    networks:
-      - jenkins
-
 networks:
   jenkins:
     driver: bridge
