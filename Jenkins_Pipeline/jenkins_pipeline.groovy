@@ -1,7 +1,10 @@
 pipeline {
+    agent {
+        label 'docker'
+    }
+
     environment {
         GIT_CREDENTIALS_ID = 'Git_creds' // Replace with your Jenkins credentials ID
-        PLAYWRIGHT_IMAGE = 'custom-playwright:v1.45.1-jammy'
     }
 
     stages {
@@ -12,17 +15,24 @@ pipeline {
             }
         }
 
-        stage('Run Playwright Container') {
+        stage('Install Dependencies') {
             steps {
-                // Run Playwright container and execute tests
-                script {
-                    docker.image(env.PLAYWRIGHT_IMAGE).inside {
-                        sh 'npm ci'
-                        sh 'npx playwright install --with-deps'
-                        sh 'npx cross-env test="qa" npx playwright test src/tests/test_dataExport/OVSYN_Pub.spec.ts --project=chrome'
-                        sh 'npx playwright show-report'
-                    }
-                }
+                // Install Node.js and Playwright dependencies
+                sh 'npm ci'
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                // Run the Playwright tests
+                sh 'npx cross-env test="qa" npx playwright test src/tests/test_dataExport/OVSYN_Pub.spec.ts --project=chrome'
+            }
+        }
+
+        stage('Generate Report') {
+            steps {
+                // Generate the HTML report
+                sh 'npx playwright show-report'
             }
         }
 

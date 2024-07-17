@@ -35,11 +35,13 @@ services:
     networks:
       - jenkins
 
-  custom-playwright:
+  playwright-runner:
     image: custom-playwright:v1.45.1-jammy
-    container_name: custom-playwright
+    container_name: playwright-runner
     networks:
       - jenkins
+    volumes:
+      - jenkins-data:/var/jenkins_home
 
 networks:
   jenkins:
