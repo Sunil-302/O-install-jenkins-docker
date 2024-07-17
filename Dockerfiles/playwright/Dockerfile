@@ -5,9 +5,9 @@ FROM mcr.microsoft.com/playwright:v1.45.1-jammy
 USER root
 RUN apt-get update && apt-get install -y sudo
 
-# Create jenkins user and group
-RUN groupadd -g 1000 jenkins && \
-    useradd -u 1000 -g jenkins -m -s /bin/bash jenkins && \
+# Create jenkins user and group with unique IDs
+RUN groupadd -r jenkins && \
+    useradd -r -g jenkins -m -s /bin/bash jenkins && \
     echo "jenkins ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Switch to the jenkins user
