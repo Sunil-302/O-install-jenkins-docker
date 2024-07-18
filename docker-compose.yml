@@ -33,6 +33,7 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
+    user: "1000:1000" # Add this line
     networks:
       - jenkins
 
