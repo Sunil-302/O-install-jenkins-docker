@@ -1,16 +1,11 @@
-# Use the base Playwright image
 FROM mcr.microsoft.com/playwright:v1.45.1-jammy
-
-# Install sudo and configure Jenkins user with sudo access
-RUN apt-get update \
-    && apt-get install -y sudo \
-    && echo "jenkins ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-# Switch to the jenkins user (assuming your Jenkins user is named 'jenkins')
+USER root
+RUN apt-get update && apt-get install -y lsb-release
+RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
+    https://download.docker.com/linux/debian/gpg
+RUN echo "deb [arch=$(dpkg --print-architecture) \
+    signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
+    https://download.docker.com/linux/debian \
+    $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+RUN apt-get update && apt-get install -y docker-ce-cli
 USER jenkins
-
-# Set the working directory
-WORKDIR /home/jenkins
-
-# Install Playwright with dependencies as the Jenkins user
-RUN npx playwright install --with-deps
