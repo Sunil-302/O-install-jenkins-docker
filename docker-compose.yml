@@ -1,4 +1,4 @@
-version: "3.7"
+version: '3.7'
 
 services:
   jenkins-docker:
@@ -19,7 +19,7 @@ services:
     command: --storage-driver overlay2
 
   my-jenkins:
-    build: .
+    image: my-jenkins
     container_name: my-jenkins
     restart: on-failure
     environment:
@@ -29,11 +29,9 @@ services:
     volumes:
       - jenkins-data:/var/jenkins_home
       - jenkins-docker-certs:/certs/client:ro
-      - ./:/var/jenkins_home/workspace/my-project # Mount your project directory
     ports:
       - "8080:8080"
       - "50000:50000"
-    user: "1000:1000" # Add this line
     networks:
       - jenkins
 
